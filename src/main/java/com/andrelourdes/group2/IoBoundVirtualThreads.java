@@ -14,9 +14,9 @@ public class IoBoundVirtualThreads {
                 executor.submit(() -> {
                     // Simulates a blocking network call (I/O).
                     try {
-                        System.out.println("Iniciando tarefa I/O-bound" + i + " em " + Thread.currentThread());
+                        System.out.println("Starting I/O-bound task " + i + " on " + Thread.currentThread());
                         Thread.sleep(1000); // Simulates 1 second of waiting.
-                        System.out.println(" Tarefa I/O-bound" +  i + " concluída.");
+                        System.out.println("I/O-bound task " + i + " completed.");
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
