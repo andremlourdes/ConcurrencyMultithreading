@@ -6,6 +6,20 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Demonstrates thread-safe listener management using {@link java.util.concurrent.CopyOnWriteArrayList}.
+ *
+ * <p>Two threads run concurrently:
+ * <ol>
+ *   <li>Thread 1 iterates over the listener list and fires 5 events in sequence.</li>
+ *   <li>Thread 2 adds a third listener while Thread 1 is still notifying.</li>
+ * </ol>
+ *
+ * <p>{@code CopyOnWriteArrayList} creates a fresh copy of the underlying array on every
+ * write, so the iterator in Thread 1 always sees the snapshot it started with and
+ * never throws {@link java.util.ConcurrentModificationException}. The newly added
+ * Listener C will only receive events fired after it was registered.
+ */
 public class OnWriteListener {
 
     // Listener interface.

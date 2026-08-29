@@ -4,6 +4,21 @@ import java.time.LocalDateTime;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+/**
+ * Demonstrates the three scheduling strategies provided by {@link java.util.concurrent.ScheduledExecutorService}.
+ *
+ * <ul>
+ *   <li><b>schedule</b>: runs a task exactly once after a fixed delay (3 seconds).</li>
+ *   <li><b>scheduleAtFixedRate</b>: runs a task repeatedly at a fixed interval (every 5 seconds),
+ *       measuring from the <em>start</em> of each execution. If a run takes longer than the
+ *       period, the next run starts immediately after it finishes.</li>
+ *   <li><b>scheduleWithFixedDelay</b>: runs a task repeatedly with a fixed delay (5 seconds)
+ *       measured from the <em>end</em> of the previous execution, guaranteeing a pause
+ *       between runs regardless of how long each run takes.</li>
+ * </ul>
+ *
+ * The scheduler runs for 20 seconds for observation, then shuts down via try-with-resources.
+ */
 public class ScheduledTasks {
      public static void main(String[] args) throws InterruptedException{
          try (ScheduledExecutorService schedule = Executors.newScheduledThreadPool(2)){

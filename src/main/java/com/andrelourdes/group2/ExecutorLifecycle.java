@@ -4,6 +4,18 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Demonstrates the two recommended patterns for shutting down an {@link java.util.concurrent.ExecutorService}.
+ *
+ * <ol>
+ *   <li><b>try-with-resources</b> (Java 19+): {@code ExecutorService} implements
+ *       {@code AutoCloseable}, so the executor is shut down automatically when the
+ *       block exits — the preferred and safest approach.</li>
+ *   <li><b>Manual shutdown</b>: calls {@code shutdown()} to stop accepting new tasks,
+ *       then waits up to 60 seconds for running tasks to finish. If they do not finish
+ *       in time, {@code shutdownNow()} is called to cancel them forcefully.</li>
+ * </ol>
+ */
 public class ExecutorLifecycle {
     public static void main(String[] args) {
         // Starting with Java 19, ExecutorService implements AutoCloseable.

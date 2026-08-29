@@ -3,6 +3,15 @@ package com.andrelourdes.group2;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Demonstrates how to run CPU-bound tasks efficiently using a fixed thread pool.
+ *
+ * <p>The pool size is set to the number of available CPU cores so that each thread
+ * can occupy a physical core without context-switching overhead. Each submitted task
+ * performs a long summation loop (1 billion iterations) to simulate a
+ * computationally intensive workload. The executor is closed automatically via
+ * try-with-resources, which calls {@code shutdown()} and waits for all tasks to finish.
+ */
 public class CpuBoundTasks {
     public static void main(String[] args) {
         // The number of threads is sized according to the processor cores.
