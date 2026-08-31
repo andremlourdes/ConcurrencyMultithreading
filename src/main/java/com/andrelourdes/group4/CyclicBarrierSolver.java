@@ -35,13 +35,13 @@ public class CyclicBarrierSolver  {
         @Override
         public void run() {
             try {
-                // Phase 1: Data processing.
+                // Phase 1: Data processing. Each worker takes a different amount of time.
                 System.out.println("Worker " + id + " starting Phase 1.");
                 Thread.sleep(1000 + (id * 500));
                 System.out.println("Worker " + id + " completed Phase 1, waiting at barrier.");
                 barrier.await();
 
-                // Phase 2: Data validation.
+                // Phase 2: Data validation. Wait for all workers to complete Phase 1.
                 System.out.println("Worker " + id + " starting Phase 2.");
                 Thread.sleep(1000 + (id * 500));
                 System.out.println("Worker " + id + " completed Phase 2, waiting at barrier.");
@@ -58,7 +58,7 @@ public class CyclicBarrierSolver  {
     public static void main(String[] args) {
         int numberOfWorkers = 3;
 
-        // Barrier action: executed when all threads arrive.
+        // Barrier action executed when all workers arrive at the barrier.
         Runnable barrierAction = () -> System.out.println("\n--- Barrier broken! All workers completed the phase. Next phase started. ---\n");
         CyclicBarrier barrier = new CyclicBarrier(numberOfWorkers, barrierAction);
 

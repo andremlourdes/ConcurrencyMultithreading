@@ -22,12 +22,12 @@ import java.util.concurrent.TimeUnit;
  */
 public class OnWriteListener {
 
-    // Listener interface.
+    // Callback interface for event notifications.
     interface EventListener {
         void onEvent(String event);
     }
 
-    // Notifier class.
+    // Manages a thread-safe list of listeners and notifies them of events.
     static class Notifier {
         private final List<EventListener> listeners = new CopyOnWriteArrayList<>();
 
@@ -38,11 +38,12 @@ public class OnWriteListener {
 
         public void notifyListeners(String event) {
             System.out.println("Notifying " + listeners.size() + " listeners about event: " + event);
-            // Iteration is safe and does not throw ConcurrentModificationException.
+            // CopyOnWriteArrayList guarantees that iteration sees a consistent snapshot.
+            // No ConcurrentModificationException is thrown even if listeners are added concurrently.
             for (EventListener listener : listeners) {
                 listener.onEvent(event);
                 try {
-                    // Simulates notification work.
+                    // Simulate the work of notifying each listener.
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();

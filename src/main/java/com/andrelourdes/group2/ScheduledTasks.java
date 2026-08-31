@@ -23,38 +23,36 @@ public class ScheduledTasks {
      public static void main(String[] args) throws InterruptedException{
          try (ScheduledExecutorService schedule = Executors.newScheduledThreadPool(2)){
 
-             // Task 1: Run once after a 3-second delay.
+             // Task 1: Execute once after an initial delay of 3 seconds.
                 schedule.schedule(() -> {
                     System.out.println("One-time task executed at " + LocalDateTime.now());
                 }, 3, java.util.concurrent.TimeUnit.SECONDS);
 
-             // Task 2: Run every 5 seconds, with an initial delay of 1 second.
-             // scheduleAtFixedRate starts the next execution at the scheduled time,
-             // even if the previous execution was delayed.
-
+             // Task 2: Run repeatedly every 5 seconds (measuring from the start of each execution).
+             // If a task execution takes longer than 5 seconds, the next execution starts immediately.
                 schedule.scheduleAtFixedRate(() -> {
                     System.out.println("Periodic task executed at " + LocalDateTime.now());
                     try{
-                        Thread.sleep(1000);// Simulates work.
+                        Thread.sleep(1000); // Simulate work.
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
 
                     }
                 }, 1, 5, java.util.concurrent.TimeUnit.SECONDS);
 
-             // Task 3: Run with a fixed delay of 5 seconds between the end of one
-             // execution and the start of the next.
+             // Task 3: Run repeatedly with a fixed delay of 5 seconds between completions.
+             // The delay is measured from the end of one execution to the start of the next.
                 schedule.scheduleWithFixedDelay(() -> {
                     System.out.println("Periodic task (fixed delay) executed at " + LocalDateTime.now());
                     try{
-                        Thread.sleep(2000);// Simulates work.
+                        Thread.sleep(2000); // Simulate work.
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
                 }, 1, 5, java.util.concurrent.TimeUnit.SECONDS);
 
-             // Lets the scheduler run for 20 seconds for observation.
+             // Allow the scheduler to run for 20 seconds so tasks can execute.
              Thread.sleep(20000);
-         } // shutdown() is called here.
+         } // Scheduler automatically shuts down here.
      }
 }

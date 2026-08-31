@@ -30,8 +30,10 @@ public class MapContention {
     }
 
     private static void runTest(Map<String, Integer> map) throws InterruptedException {
-        int numThreads = Runtime.getRuntime().availableProcessors() * 2; // Launch twice the number of available CPU threads.
-        int operationsPerThread = 100_000; // Each thread performs 100,000 operations.
+        // Use twice as many threads as available cores to simulate concurrent contention.
+        int numThreads = Runtime.getRuntime().availableProcessors() * 2;
+        // Each thread performs 100,000 put/get operations.
+        int operationsPerThread = 100_000;
 
         try (ExecutorService executor = Executors.newFixedThreadPool(numThreads)) {
             long startTime = System.nanoTime();

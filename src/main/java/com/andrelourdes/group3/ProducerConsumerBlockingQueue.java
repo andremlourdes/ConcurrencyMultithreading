@@ -6,20 +6,28 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Demonstrates the classic Producer–Consumer pattern using {@link java.util.concurrent.ArrayBlockingQueue}.
+ * Demonstrates the classic Producer-Consumer pattern using {@link java.util.concurrent.ArrayBlockingQueue}.
  *
- * <p>Two virtual threads run concurrently:
+ * <p><b>Technique: Producer-Consumer Pattern with Blocking Queues</b>
  * <ul>
- *   <li><b>Producer</b>: generates integers 0–99 and inserts them into the queue.
- *       It blocks automatically when the queue is full (capacity = 10),
- *       providing natural back-pressure.</li>
- *   <li><b>Consumer</b>: removes integers one at a time and processes them.
- *       It blocks automatically when the queue is empty, avoiding busy-waiting.
- *       Processing stops when the sentinel value 99 is received.</li>
+ *   <li><b>Producer:</b> Generates data and puts it into a bounded queue.
+ *       Automatically blocks when the queue is full, providing natural back-pressure.</li>
+ *   <li><b>Consumer:</b> Removes data from the queue and processes it.
+ *       Automatically blocks when the queue is empty, avoiding busy-waiting.</li>
+ *   <li><b>Decoupling:</b> Queue acts as a buffer that decouples production rate from consumption rate,
+ *       enabling different threads to work at different speeds without coordination overhead.</li>
  * </ul>
  *
- * <p>The producer runs at twice the speed of the consumer (50 ms vs 100 ms per item),
- * so the queue acts as a buffer that decouples their execution rates.
+ * <p><b>Execution Model:</b>
+ * <ul>
+ *   <li>Two virtual threads run concurrently using {@code newVirtualThreadPerTaskExecutor()}.</li>
+ *   <li>Producer generates integers 0-99 at 50 ms intervals (20 items/second).</li>
+ *   <li>Consumer processes integers at 100 ms intervals (10 items/second).</li>
+ *   <li>The queue (capacity = 10) buffers the rate difference between producer and consumer.</li>
+ *   <li>Processing stops when the sentinel value 99 is consumed.</li>
+ * </ul>
+ *
+ * <p>This pattern is fundamental for decoupled, asynchronous processing in concurrent systems.
  */
 public class ProducerConsumerBlockingQueue {
 

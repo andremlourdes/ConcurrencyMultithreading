@@ -16,16 +16,16 @@ import java.util.stream.IntStream;
  */
 public class IoBoundVirtualThreads {
     public static void main(String[] args) {
-        // Creates an executor that launches a new virtual thread for each task.
-        // There is no virtual thread pooling because they are extremely lightweight.
+        // Create an executor that spawns a new virtual thread for every task.
+        // Virtual threads are extremely lightweight, so no pooling is needed.
 
         try(ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
             IntStream.range(0,100_000).forEach(i -> {
                 executor.submit(() -> {
-                    // Simulates a blocking network call (I/O).
+                    // Simulate a blocking network or I/O operation.
                     try {
                         System.out.println("Starting I/O-bound task " + i + " on " + Thread.currentThread());
-                        Thread.sleep(1000); // Simulates 1 second of waiting.
+                        Thread.sleep(1000); // Block for 1 second to simulate I/O.
                         System.out.println("I/O-bound task " + i + " completed.");
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();

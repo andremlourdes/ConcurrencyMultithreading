@@ -33,7 +33,7 @@ public class ServiceStartupLatch {
                 System.out.println("Initializing " + serviceName + "...");
                 Thread.sleep(startupTime);
                 System.out.println(serviceName + " initialized.");
-                latch.countDown(); // Decrements the latch counter.
+                latch.countDown(); // Decrement the latch. When it reaches zero, await() unblocks.
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -50,7 +50,7 @@ public class ServiceStartupLatch {
             executor.submit(new ServiceInitializer("MessagingService", 7000, startupLatch));
 
             System.out.println("Main thread waiting for services initialization...");
-            startupLatch.await(); // Blocks until counter reaches zero.
+            startupLatch.await(); // Block until all services have completed (latch counter reaches zero).
 
             System.out.println("All services have been initialized. Application is ready!");
         }
